@@ -8,6 +8,17 @@ import (
 	"github.com/ilyakaznacheev/cleanenv"
 )
 
+type Config struct {
+	Postgres_Port     string        `env:"DB_PORT" env-default:"5432"`
+	Postgres_Host     string        `env:"DB_HOST" env-default:"localhost"`
+	Postgres_Name     string        `env:"DB_NAME" env-default:"postgres"`
+	Postgres_User     string        `env:"DB_USER" env-default:"user"`
+	Postgres_Password string        `env:"DB_DASSWORD"`
+	Server_Port       string        `env:"port" env-description:"server port"`
+	Timeout           time.Duration `env:"timeout" env-description:"timeout"`
+	IddleTimeout      time.Duration `env:"idle_timeout" env-description:"idle timeout"`
+}
+
 type ConfigDatabase struct {
 	Port     string `env:"DB_PORT" env-default:"5432"`
 	Host     string `env:"DB_HOST" env-default:"localhost"`
@@ -17,12 +28,12 @@ type ConfigDatabase struct {
 }
 
 type HTTPServer struct {
-	Port         string        `env:"PORT" env-description:"server port"`
-	Timeout      time.Duration `env:"TIMEOUT" env-description:"Timeout"`
-	IddleTimeout time.Duration `env:"IDLE_TIMEOUT" env-description:"Idle timeout"`
+	Port         string        `env:"port" env-description:"server port"`
+	Timeout      time.Duration `env:"timeout" env-description:"timeout"`
+	IddleTimeout time.Duration `env:"idle_timeout" env-description:"idle timeout"`
 }
 
-func MustLoad() {
+func MustLoad() ConfigDatabase {
 	configPath := os.Getenv("CONFIG_PATH")
 	if configPath == "" {
 		log.Fatal("CONFIG_PATH is not set")
@@ -31,13 +42,10 @@ func MustLoad() {
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		log.Fatalf("config file %s does not exists", configPath)
 	}
-	var cfg_db ConfigDatabase
-	var cfg_server HTTPServer
+	var cfg ConfigDatabase
 
-	if err := cleanenv.ReadConfig(configPath, &cfg_db); err != nil {
+	if err := cleanenv.ReadConfig(configPath, &cfg); err != nil {
 		log.Fatal("cannot read database config")
 	}
-	if err := cleanenv.ReadConfig(configPath, &cfg_server); err != nil {
-		log.Fatal("cannot read server config")
-	}
+	return cfg
 }
