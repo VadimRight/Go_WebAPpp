@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/ilyakaznacheev/cleanenv"
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -33,7 +34,13 @@ type HTTPServer struct {
 	IddleTimeout time.Duration `env:"idle_timeout" env-description:"idle timeout"`
 }
 
-func MustLoad() ConfigDatabase {
+func MustLoad() Config {
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("err loading: %v", err)
+	}
+
 	configPath := os.Getenv("CONFIG_PATH")
 	if configPath == "" {
 		log.Fatal("CONFIG_PATH is not set")
@@ -42,7 +49,7 @@ func MustLoad() ConfigDatabase {
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		log.Fatalf("config file %s does not exists", configPath)
 	}
-	var cfg ConfigDatabase
+	var cfg Config
 
 	if err := cleanenv.ReadConfig(configPath, &cfg); err != nil {
 		log.Fatal("cannot read database config")
