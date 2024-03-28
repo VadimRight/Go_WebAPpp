@@ -21,15 +21,15 @@ type Config struct {
 }
 
 type ConfigDatabase struct {
-	Port     string `env:"DB_PORT" env-default:"5432"`
-	Host     string `env:"DB_HOST" env-default:"localhost"`
-	Name     string `env:"DB_NAME" env-default:"godb"`
-	User     string `env:"DB_USER" env-default:"postgres"`
-	Password string `env:"DB_DASSWORD"`
+	Postgres_Port     string `env:"DB_PORT" env-default:"5432"`
+	Postgres_Host     string `env:"DB_HOST" env-default:"localhost"`
+	Postgres_Name     string `env:"DB_NAME" env-default:"godb"`
+	Postgres_User     string `env:"DB_USER" env-default:"postgres"`
+	Postgres_Password string `env:"DB_DASSWORD"`
 }
 
 type HTTPServer struct {
-	Port         string        `env:"SERVER_PORT" env-description:"server port"`
+	Server_Port  string        `env:"SERVER_PORT" env-description:"server port"`
 	Timeout      time.Duration `env:"TIMEOUT" env-description:"timeout"`
 	IddleTimeout time.Duration `env:"IDLE_TIMEOUT" env-description:"idle timeout"`
 }

@@ -33,6 +33,7 @@ func main() {
 		slog.Duration("Idle Timeout: ", cfg.IdleTimeout),
 	)
 }
+
 func setupLogger(env string) *slog.Logger {
 	var log *slog.Logger
 	switch env {
