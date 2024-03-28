@@ -10,28 +10,28 @@ import (
 )
 
 type Config struct {
-	Postgres_Port     string        `env:"DB_PORT"`
-	Postgres_Host     string        `env:"DB_HOST"`
-	Postgres_Name     string        `env:"DB_NAME"`
-	Postgres_User     string        `env:"DB_USER"`
-	Postgres_Password string        `env:"DB_DASSWORD"`
-	Server_Port       string        `env:"port" env-description:"server port"`
-	Timeout           time.Duration `env:"timeout" env-description:"timeout"`
-	IdleTimeout       time.Duration `env:"idle_timeout" env-description:"idle timeout"`
+	Postgres_Port     string        `env:"DB_PORT" env-default:"5432"`
+	Postgres_Host     string        `env:"DB_HOST" env-default:"localhost"`
+	Postgres_Name     string        `env:"DB_NAME" env-default:"godb"`
+	Postgres_User     string        `env:"DB_USER" env-default:"postgres"`
+	Postgres_Password string        `env:"DB_DASSWORD" env-default:"postgres"`
+	Server_Port       string        `env:"SERVER_PORT" env-default:"8000"`
+	Timeout           time.Duration `env:"TIMEOUT" env-default:"30s"`
+	IdleTimeout       time.Duration `env:"IDLE_TIMEOUT" env-default:"110s"`
 }
 
 type ConfigDatabase struct {
 	Port     string `env:"DB_PORT" env-default:"5432"`
 	Host     string `env:"DB_HOST" env-default:"localhost"`
-	Name     string `env:"DB_NAME" env-default:"postgres"`
-	User     string `env:"DB_USER" env-default:"user"`
+	Name     string `env:"DB_NAME" env-default:"godb"`
+	User     string `env:"DB_USER" env-default:"postgres"`
 	Password string `env:"DB_DASSWORD"`
 }
 
 type HTTPServer struct {
-	Port         string        `env:"port" env-description:"server port"`
-	Timeout      time.Duration `env:"timeout" env-description:"timeout"`
-	IddleTimeout time.Duration `env:"idle_timeout" env-description:"idle timeout"`
+	Port         string        `env:"SERVER_PORT" env-description:"server port"`
+	Timeout      time.Duration `env:"TIMEOUT" env-description:"timeout"`
+	IddleTimeout time.Duration `env:"IDLE_TIMEOUT" env-description:"idle timeout"`
 }
 
 func MustLoad() Config {
