@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"log/slog"
 
 	"github.com/VadimRight/Go_WebApp/internal/config"
+	"github.com/VadimRight/Go_WebApp/internal/storage/postgres"
 )
 
 const (
@@ -32,8 +34,9 @@ func main() {
 		slog.Duration("Timeout: ", cfg.Timeout),
 		slog.Duration("Idle Timeout: ", cfg.IdleTimeout),
 	)
+	db := postgres.Init()
+	fmt.Println(db)
 }
-
 func setupLogger(env string) *slog.Logger {
 	var log *slog.Logger
 	switch env {
