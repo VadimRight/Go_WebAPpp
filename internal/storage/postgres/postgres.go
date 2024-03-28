@@ -18,7 +18,7 @@ func InitDB() *gorm.DB {
 		sl.Error(err)
 	}
 	db.AutoMigrate(
-		&models.User{},
+		&models.URL{},
 	)
 	return db
 }
