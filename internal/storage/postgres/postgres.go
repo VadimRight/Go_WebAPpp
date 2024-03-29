@@ -48,3 +48,14 @@ func AddURL(url string, site_name string) *gorm.DB {
 	return result
 
 }
+
+func TestAddUrl() *gorm.DB {
+	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
+	if err != nil {
+		sl.Error(err)
+	}
+	id := uuid.New()
+	url := models.URL{Id: id, Url: "test.com", Site: "test"}
+	result := db.Create(url)
+	return result
+}
