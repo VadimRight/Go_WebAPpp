@@ -34,7 +34,7 @@ func main() {
 		slog.Duration("Timeout: ", cfg.Timeout),
 		slog.Duration("Idle Timeout: ", cfg.IdleTimeout),
 	)
-	db := postgres.Init()
+	db := postgres.InitDB()
 	fmt.Println(db)
 }
 func setupLogger(env string) *slog.Logger {
