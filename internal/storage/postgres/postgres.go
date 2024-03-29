@@ -17,7 +17,7 @@ var cfg = config.MustLoad()
 var dbURL = fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.Postgres_User, cfg.Postgres_Password, cfg.Postgres_Host, cfg.Postgres_Port, cfg.Postgres_Name)
 
 func InitDB() *gorm.DB {
-	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
+	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
 		sl.Error(err)
 	}
@@ -27,6 +27,13 @@ func InitDB() *gorm.DB {
 	return db
 }
 
-// func GetURL(url string) {
-// 	gorm.DB.Statement.First(&models.URL{})
-// }
+func GetURL(id string) *gorm.DB {
+	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
+	if err != nil {
+		sl.Error(err)
+	}
+	url := models.URL{}
+	url_id := []string{}
+	query := db.First(&url, url_id)
+	return query
+}
