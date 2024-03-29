@@ -2,13 +2,12 @@ package postgres
 
 import (
 	"fmt"
-	// "log"
 
 	"github.com/VadimRight/Go_WebApp/internal/config"
 	"github.com/VadimRight/Go_WebApp/internal/lib/logger/sl"
 	"github.com/VadimRight/Go_WebApp/models"
 
-	// "github.com/google/uuid"
+	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -36,4 +35,28 @@ func GetURL(id string) *gorm.DB {
 	url_id := []string{}
 	query := db.First(&url, url_id)
 	return query
+}
+
+func AddURL(url string, site_name string) *gorm.DB {
+	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
+	if err != nil {
+		sl.Error(err)
+	}
+	id := uuid.New()
+	new_url := models.URL{Id: id, Url: url, Site: site_name}
+	result := db.Create(new_url)
+	return result
+
+}
+
+func TestAddUrl() *gorm.DB {
+	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
+	if err != nil {
+		sl.Error(err)
+	}
+	id := uuid.New()
+	url := models.URL{Id: id, Url: "test.com", Site: "test"}
+	result := db.Create(url)
+	defer db.Delete(url)
+	return result
 }

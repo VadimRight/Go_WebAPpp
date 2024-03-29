@@ -36,6 +36,8 @@ func main() {
 	)
 	db := postgres.InitDB()
 	fmt.Println(db)
+	test_add := postgres.TestAddUrl()
+	fmt.Println(test_add)
 }
 func setupLogger(env string) *slog.Logger {
 	var log *slog.Logger
