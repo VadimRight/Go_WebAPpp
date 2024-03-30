@@ -38,7 +38,8 @@ func GetURL(id string) *gorm.DB {
 }
 
 func AddURL(url string, site_name string) *gorm.DB {
-	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{}) if err != nil {
+	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
+	if err != nil {
 		sl.Error(err)
 	}
 	id := uuid.New()
@@ -60,4 +61,3 @@ func TestAddUrl() *gorm.DB {
 	fmt.Printf("\nTest session is done!\n")
 	return result
 }
-

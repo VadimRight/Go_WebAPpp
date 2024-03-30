@@ -11,7 +11,8 @@ func GetRoot(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, "This is my website!\n")
 }
 
-func getHello(w http.ResponseWriter, r *http.Request) {
+func GetHello(w http.ResponseWriter, r *http.Request) {
+	_ = r
 	fmt.Printf("got /hello request\n")
 	io.WriteString(w, "Hello, HTTP!\n")
 }

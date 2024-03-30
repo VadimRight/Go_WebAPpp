@@ -1,13 +1,17 @@
 package main
 
 import (
+	"errors"
 	"fmt"
+	"log/slog"
+	"net/http"
 	"os"
 
-	"log/slog"
-
 	"github.com/VadimRight/Go_WebApp/internal/config"
+	"github.com/VadimRight/Go_WebApp/internal/server"
 	"github.com/VadimRight/Go_WebApp/internal/storage/postgres"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 )
 
 const (
@@ -38,6 +42,18 @@ func main() {
 	fmt.Println(db)
 	test_add := postgres.TestAddUrl()
 	fmt.Println(test_add)
+	router := chi.NewRouter()
+	router.Use(middleware.RequestID)
+	http.HandleFunc("/", server.GetRoot)
+	http.HandleFunc("/hello", server.GetHello)
+	port := fmt.Sprintf(":%s", cfg.Server_Port)
+	err := http.ListenAndServe(port, nil)
+	if errors.Is(err, http.ErrServerClosed) {
+		fmt.Printf("server closed\n")
+	} else if err != nil {
+		fmt.Printf("error starting server: %s\n", err)
+		os.Exit(1)
+	}
 }
 func setupLogger(env string) *slog.Logger {
 	var log *slog.Logger
