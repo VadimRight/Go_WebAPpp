@@ -44,6 +44,9 @@ func main() {
 	fmt.Println(test_add)
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
+	router.Use(middleware.RealIP)
+	router.Use(middleware.Logger)
+
 	http.HandleFunc("/", server.GetRoot)
 	http.HandleFunc("/hello", server.GetHello)
 	port := fmt.Sprintf(":%s", cfg.Server_Port)

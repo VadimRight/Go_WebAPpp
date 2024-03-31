@@ -46,7 +46,6 @@ func AddURL(urltosave string, site_name string) *gorm.DB {
 	new_url := models.URL{Id: id, Url: urltosave, Site: site_name}
 	result := db.Create(new_url)
 	return result
-
 }
 
 func DeleteURL(id uuid.UUID) {
