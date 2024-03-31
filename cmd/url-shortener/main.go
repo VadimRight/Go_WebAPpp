@@ -9,6 +9,7 @@ import (
 
 	"github.com/VadimRight/Go_WebApp/internal/config"
 	"github.com/VadimRight/Go_WebApp/internal/server"
+	mwlogger "github.com/VadimRight/Go_WebApp/internal/server/middleware/logger"
 	"github.com/VadimRight/Go_WebApp/internal/storage/postgres"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -46,7 +47,9 @@ func main() {
 	router.Use(middleware.RequestID)
 	router.Use(middleware.RealIP)
 	router.Use(middleware.Logger)
-
+	router.Use(mwlogger.New(log))
+	router.Use(middleware.Recoverer)
+	router.Use(middleware.URLFormat)
 	http.HandleFunc("/", server.GetRoot)
 	http.HandleFunc("/hello", server.GetHello)
 	port := fmt.Sprintf(":%s", cfg.Server_Port)
