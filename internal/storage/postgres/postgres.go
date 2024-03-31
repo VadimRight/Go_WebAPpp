@@ -26,7 +26,7 @@ func InitDB() *gorm.DB {
 	return db
 }
 
-func GetURL(id string) *gorm.DB {
+func GetURL(id uuid.UUID) *gorm.DB {
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
 		sl.Error(err)
@@ -37,16 +37,25 @@ func GetURL(id string) *gorm.DB {
 	return query
 }
 
-func AddURL(url string, site_name string) *gorm.DB {
+func AddURL(urltosave string, site_name string) *gorm.DB {
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
 		sl.Error(err)
 	}
 	id := uuid.New()
-	new_url := models.URL{Id: id, Url: url, Site: site_name}
+	new_url := models.URL{Id: id, Url: urltosave, Site: site_name}
 	result := db.Create(new_url)
 	return result
 
+}
+
+func DeleteURL(id uuid.UUID) {
+	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
+	if err != nil {
+		sl.Error(err)
+	}
+	db.Delete(&models.URL{}, id)
+	fmt.Printf("Deleted url instance where id = %s", id)
 }
 
 func TestAddUrl() *gorm.DB {
