@@ -44,6 +44,7 @@ func main() {
 	fmt.Println(db)
 	test_add := postgres.TestAddUrl()
 	fmt.Println(test_add)
+
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
 	router.Use(middleware.RealIP)
@@ -51,6 +52,7 @@ func main() {
 	router.Use(mwlogger.New(log))
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.URLFormat)
+
 	http.HandleFunc("/", server.GetRoot)
 	http.HandleFunc("/hello", server.GetHello)
 	port := fmt.Sprintf(":%s", cfg.Server_Port)
