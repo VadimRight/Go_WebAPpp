@@ -6,7 +6,6 @@ import (
 	"github.com/VadimRight/Go_WebApp/internal/config"
 	"github.com/VadimRight/Go_WebApp/internal/lib/logger/sl"
 	"github.com/VadimRight/Go_WebApp/models"
-
 	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -46,15 +45,7 @@ func AddURL(urltosave string, site_name string) *gorm.DB {
 	new_url := models.URL{Id: id, Url: urltosave, Site: site_name}
 	result := db.Create(new_url)
 	return result
-}
 
-func DeleteURL(id uuid.UUID) {
-	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
-	if err != nil {
-		sl.Error(err)
-	}
-	db.Delete(&models.URL{}, id)
-	fmt.Printf("Deleted url instance where id = %s", id)
 }
 
 func TestAddUrl() *gorm.DB {
@@ -68,4 +59,11 @@ func TestAddUrl() *gorm.DB {
 	defer db.Delete(url)
 	fmt.Printf("\nTest session is done!\n")
 	return result
+}
+func DeleteURL(id uuid.UUID) {
+	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
+	if err != nil {
+		sl.Error(err)
+	}
+	db.Delete(&models.URL{}, id)
 }
