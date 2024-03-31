@@ -36,13 +36,13 @@ func GetURL(id uuid.UUID) *gorm.DB {
 	return query
 }
 
-func AddURL(urltosave string, site_name string) *gorm.DB {
+func AddURL(urltosave string, alias_name string) *gorm.DB {
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
 		sl.Error(err)
 	}
 	id := uuid.New()
-	new_url := models.URL{Id: id, Url: urltosave, Site: site_name}
+	new_url := models.URL{Id: id, Url: urltosave, Alias: alias_name}
 	result := db.Create(new_url)
 	return result
 
@@ -54,7 +54,7 @@ func TestAddUrl() *gorm.DB {
 		sl.Error(err)
 	}
 	id := uuid.New()
-	url := models.URL{Id: id, Url: "test.com", Site: "test"}
+	url := models.URL{Id: id, Url: "test.com", Alias: "test"}
 	result := db.Create(url)
 	defer db.Delete(url)
 	fmt.Printf("\nTest session is done!\n")

@@ -63,6 +63,7 @@ func main() {
 		fmt.Printf("error starting server: %s\n", err)
 		os.Exit(1)
 	}
+
 }
 func setupLogger(env string) *slog.Logger {
 	var log *slog.Logger
