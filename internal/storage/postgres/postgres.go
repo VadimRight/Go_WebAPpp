@@ -14,7 +14,12 @@ import (
 var cfg = config.MustLoad()
 var dbURL = fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.Postgres_User, cfg.Postgres_Password, cfg.Postgres_Host, cfg.Postgres_Port, cfg.Postgres_Name)
 
-func InitDB() *gorm.DB {
+
+type Storage struct {
+	db *gorm.DB
+}
+
+func InitDB() *Storage {
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
 		sl.Error(err)
@@ -22,7 +27,7 @@ func InitDB() *gorm.DB {
 	db.AutoMigrate(
 		&models.URL{},
 	)
-	return db
+	return &Storage{db: db}
 }
 
 func GetURL(id uuid.UUID) *gorm.DB {
