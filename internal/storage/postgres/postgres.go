@@ -9,17 +9,18 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	//	"database/sql"
 )
 
 var cfg = config.MustLoad()
 var dbURL = fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.Postgres_User, cfg.Postgres_Password, cfg.Postgres_Host, cfg.Postgres_Port, cfg.Postgres_Name)
 
 
-type Storage struct {
+type GORMStorage struct {
 	db *gorm.DB
 }
 
-func InitDB() *Storage {
+func InitDB() *GORMStorage {
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
 		sl.Error(err)
@@ -27,7 +28,7 @@ func InitDB() *Storage {
 	db.AutoMigrate(
 		&models.URL{},
 	)
-	return &Storage{db: db}
+	return &GORMStorage{db: db}
 }
 
 func GetURL(id uuid.UUID) *gorm.DB {
