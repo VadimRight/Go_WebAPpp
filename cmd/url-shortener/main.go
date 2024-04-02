@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
-
+	"net/http"
 	"github.com/VadimRight/Go_WebApp/internal/lib/logger/sl"
 	"github.com/VadimRight/Go_WebApp/internal/config"
 	"github.com/VadimRight/Go_WebApp/internal/lib/logger/handlers/slogpretty"
@@ -62,8 +62,18 @@ func main() {
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.URLFormat)
 	router.Post("/", save.New(log, db))
-
-
+	log.Info("starting server", slog.String("Server Port", cfg.Server_Port))
+	srv := &http.Server{
+		Handler:      router,
+		ReadTimeout:  cfg.Timeout,
+		WriteTimeout: cfg.Timeout,
+		IdleTimeout:  cfg.IdleTimeout,
+	}
+	go func() {
+		if err := srv.ListenAndServe(); err != nil {
+			log.Error("failed to start server")
+		}
+	}()
 }
 
 func setupLogger(env string) *slog.Logger {
