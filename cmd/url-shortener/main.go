@@ -64,15 +64,17 @@ func main() {
 	router.Post("/", save.New(log, db))
 	log.Info("starting server", slog.String("Server Port", cfg.Server_Port))
 	srv := &http.Server{
+		Addr:		cfg.Server_Addr,
 		Handler:      router,
 		ReadTimeout:  cfg.Timeout,
 		WriteTimeout: cfg.Timeout,
 		IdleTimeout:  cfg.IdleTimeout,
 	}
-	go func() {
+	func () error {
 		if err := srv.ListenAndServe(); err != nil {
-			log.Error("failed to start server")
+			return fmt.Errorf("%s", err)
 		}
+		return nil	
 	}()
 }
 
