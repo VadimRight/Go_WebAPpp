@@ -14,9 +14,8 @@ import (
 	"github.com/go-chi/render"
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
-	// "gorm.io/gorm"
 
-	"github.com/VadimRight/Go_WebApp/internal/storage/postgres"
+//	"github.com/VadimRight/Go_WebApp/internal/storage/postgres"
 )
 
 type Request struct {
@@ -31,7 +30,7 @@ type Response struct {
 }
 
 type URLSaver interface {
-	AddURL(urltosave string, alias_name string) (*postgres.GORMStorage, error)
+	 SaveURL(urltosave string, alias_name string) (string, error)
 }
 
 const aliasLength = 6
@@ -72,7 +71,7 @@ func New(log *slog.Logger, urlSave URLSaver) http.HandlerFunc {
 			alias = random.NewRundomString(aliasLength)
 		}
 
-		id, err := urlSave.AddURL(req.URL, alias)
+		url, err := urlSave.SaveURL(req.URL, alias)
 		if errors.Is(err, storage.ErrUrlExists) {
 			log.Info("url already exists", slog.String("url", req.URL))
 			render.JSON(w, r, response.Error("url already exists"))
@@ -83,7 +82,7 @@ func New(log *slog.Logger, urlSave URLSaver) http.HandlerFunc {
 			render.JSON(w, r, response.Error("failed to add url"))
 			return
 		}
-		log.Info("url added",  id)
+		log.Info("url added",  slog.String("url", url))
 		responseOK(w, r, alias)
 	}
 
