@@ -13,9 +13,13 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
 	"github.com/go-playground/validator/v10"
+	"github.com/google/uuid"
+	"gorm.io/gorm"
+
 )
 
 type Request struct {
+	Id uuid.UUID
 	URL   string `json:"url" validate:"required,url"`
 	Alias string `json:"alias,omitempty"`
 }
@@ -26,7 +30,7 @@ type Response struct {
 }
 
 type URLSaver interface {
-	SaveURL(urlToSave string, alias string) (int64, error)
+	 AddURL(urltosave string, alias_name string) (*gorm.DB) 
 }
 
 const aliasLength = 6
@@ -67,7 +71,7 @@ func New(log *slog.Logger, urlSave URLSaver) http.HandlerFunc {
 			alias = random.NewRundomString(aliasLength)
 		}
 
-		id, err := urlSave.SaveURL(req.URL, alias)
+		id, err := urlSave.AddURL(req.URL, alias)
 		if errors.Is(err, storage.ErrUrlExists) {
 			log.Info("url already exists", slog.String("url", req.URL))
 			render.JSON(w, r, response.Error("url already exists"))
@@ -78,7 +82,7 @@ func New(log *slog.Logger, urlSave URLSaver) http.HandlerFunc {
 			render.JSON(w, r, response.Error("failed to add url"))
 			return
 		}
-		log.Info("url added", slog.Int64("id", id))
+		log.Info("url added",  id)
 		responseOK(w, r, alias)
 	}
 
