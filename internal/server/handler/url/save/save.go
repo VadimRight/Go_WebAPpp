@@ -29,13 +29,13 @@ type Response struct {
 	Alias string `json:"alias,omitempty"`
 }
 
-type URLSaver interface {
+type URLHadler interface {
 	 SaveURL(urltosave string, alias_name string) (string, error)
 }
 
 const aliasLength = 6
 
-func New(log *slog.Logger, urlSave URLSaver) http.HandlerFunc {
+func New(log *slog.Logger, urlSave URLHadler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		const op = "hadlers.url.save.New"
 		log := log.With(
