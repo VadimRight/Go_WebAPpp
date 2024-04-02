@@ -12,7 +12,7 @@ import (
 	"github.com/VadimRight/Go_WebApp/internal/storage/postgres"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-//	"github.com/VadimRight/Go_WebApp/internal/server/handler/url/save"
+	"github.com/VadimRight/Go_WebApp/internal/server/handler/url/save"
 )
 
 
@@ -41,7 +41,8 @@ func main() {
 		slog.Duration("Timeout", cfg.Timeout),
 		slog.Duration("Idle Timeout", cfg.IdleTimeout),
 	)
-	db, err := postgres.InitDB()
+	daba := postgres.GORMStorage{}
+	db, err := daba.InitDB()
 	if err != nil {
 		log.Error("failed to init storage", sl.Error(err))
 		os.Exit(1)
@@ -60,7 +61,7 @@ func main() {
 	router.Use(mwlogger.New(log))
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.URLFormat)
-	// router.Post("/", save.New(log, db))
+	router.Post("/", save.New(log, db))
 
 
 }
