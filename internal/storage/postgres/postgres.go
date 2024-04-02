@@ -19,7 +19,7 @@ type GORMStorage struct {
 	db *gorm.DB
 }
 
-func InitDB() (*GORMStorage, error) {
+func (g *GORMStorage) InitDB() (*GORMStorage, error) {
 	const op = "storage.Posgres.New"
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
@@ -34,7 +34,7 @@ func InitDB() (*GORMStorage, error) {
 	return &GORMStorage{db: db}, nil
 }
 
-func GetURL(id uuid.UUID) (*GORMStorage, error) {	
+func (g *GORMStorage) GetURL(id uuid.UUID) (*GORMStorage, error) {	
 	const op = "storage.Posgres.New"
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
@@ -46,7 +46,7 @@ func GetURL(id uuid.UUID) (*GORMStorage, error) {
 	return &GORMStorage{db: query}, nil
 }
 
-func SaveURL(urltosave string, alias_name string) (string, error) {
+func (g *GORMStorage) SaveURL(urltosave string, alias_name string) (string, error) {
 	const op = "storage.Posgres.New"
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
