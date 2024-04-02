@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/VadimRight/Go_WebApp/internal/lib/logger/sl"
 	"github.com/VadimRight/Go_WebApp/internal/config"
 	"github.com/VadimRight/Go_WebApp/internal/lib/logger/handlers/slogpretty"
 	mwlogger "github.com/VadimRight/Go_WebApp/internal/server/middleware/logger"
@@ -40,9 +41,17 @@ func main() {
 		slog.Duration("Timeout", cfg.Timeout),
 		slog.Duration("Idle Timeout", cfg.IdleTimeout),
 	)
-	db := postgres.InitDB()
+	db, err := postgres.InitDB()
+	if err != nil {
+		log.Error("failed to init storage", sl.Error(err))
+		os.Exit(1)
+	}
 	fmt.Println(db)
-	test_add := postgres.TestAddUrl()
+	test_add, err := postgres.TestAddUrl()
+	if err != nil {
+		log.Error("failed to init storage", sl.Error(err))
+		os.Exit(1)
+	}
 	fmt.Println(test_add)
 		router := chi.NewRouter()
 	router.Use(middleware.RequestID)

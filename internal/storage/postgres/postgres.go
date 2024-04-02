@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/VadimRight/Go_WebApp/internal/config"
-	"github.com/VadimRight/Go_WebApp/internal/lib/logger/sl"
 	"github.com/VadimRight/Go_WebApp/models"
 	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
@@ -20,56 +19,67 @@ type GORMStorage struct {
 	db *gorm.DB
 }
 
-func InitDB() *GORMStorage {
+func InitDB() (*GORMStorage, error) {
+	const op = "storage.Posgres.New"
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
-		sl.Error(err)
+		return nil, fmt.Errorf("%s: %w", op, err)
 	}
-	db.AutoMigrate(
+	errMigration := db.AutoMigrate(
 		&models.URL{},
 	)
-	return &GORMStorage{db: db}
+	if errMigration != nil {
+		return nil, fmt.Errorf("%s: %w", op, errMigration)
+	}
+	return &GORMStorage{db: db}, nil
 }
 
-func GetURL(id uuid.UUID) *gorm.DB {
+func GetURL(id uuid.UUID) (*GORMStorage, error) {	
+	const op = "storage.Posgres.New"
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
-		sl.Error(err)
+		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 	url := models.URL{}
 	url_id := []string{}
 	query := db.First(&url, url_id)
-	return query
+	return &GORMStorage{db: query}, nil
 }
 
-func AddURL(urltosave string, alias_name string) *gorm.DB {
+func SaveURL(urltosave string, alias_name string) (string, error) {
+	const op = "storage.Posgres.New"
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
-		sl.Error(err)
+		return "", fmt.Errorf("%s: %w", op, err)
 	}
 	id := uuid.New()
 	new_url := models.URL{Id: id, Url: urltosave, Alias: alias_name}
-	result := db.Create(new_url)
-	return result
+	db.Create(new_url)
+	uuid_string := id.String()
+	return uuid_string, nil
 
 }
 
-func TestAddUrl() *gorm.DB {
+func TestAddUrl() (*GORMStorage, error) {
+	const op = "storage.Posgres.New"
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
-		sl.Error(err)
+		return nil, fmt.Errorf("%s: %w", op, err)	
 	}
 	id := uuid.New()
 	url := models.URL{Id: id, Url: "test.com", Alias: "test"}
 	result := db.Create(url)
 	defer db.Delete(url)
 	fmt.Printf("\nTest session is done!\n")
-	return result
+	return &GORMStorage{db: result}, nil
 }
-func DeleteURL(id uuid.UUID) {
+
+func DeleteURL(id uuid.UUID) (*GORMStorage, error) {
+	const op = "storage.Posgres.New"
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
-		sl.Error(err)
+		return nil, fmt.Errorf("%s: %w", op, err)	
 	}
 	db.Delete(&models.URL{}, id)
+	return &GORMStorage{db: db}, nil
 }

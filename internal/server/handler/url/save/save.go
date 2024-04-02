@@ -14,8 +14,9 @@ import (
 	"github.com/go-chi/render"
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
-	"gorm.io/gorm"
+	// "gorm.io/gorm"
 
+	"github.com/VadimRight/Go_WebApp/internal/storage/postgres"
 )
 
 type Request struct {
@@ -30,7 +31,7 @@ type Response struct {
 }
 
 type URLSaver interface {
-	 AddURL(urltosave string, alias_name string) (*gorm.DB) 
+	AddURL(urltosave string, alias_name string) (*postgres.GORMStorage, error)
 }
 
 const aliasLength = 6
