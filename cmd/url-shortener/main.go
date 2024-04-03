@@ -5,7 +5,6 @@ import (
 	"log/slog"
 	"os"
 	"net/http"
-	"github.com/VadimRight/Go_WebApp/internal/lib/logger/sl"
 	"github.com/VadimRight/Go_WebApp/internal/config"
 	"github.com/VadimRight/Go_WebApp/internal/lib/logger/handlers/slogpretty"
 	mwlogger "github.com/VadimRight/Go_WebApp/internal/server/middleware/logger"
@@ -44,13 +43,13 @@ func main() {
 	daba := postgres.GORMStorage{}
 	db, err := daba.InitDB()
 	if err != nil {
-		log.Error("failed to init storage", sl.Error(err))
+		log.Error("failed to init storage", err)
 		os.Exit(1)
 	}
 	fmt.Println(db)
 	test_add, err := postgres.TestAddUrl()
 	if err != nil {
-		log.Error("failed to init storage", sl.Error(err))
+		log.Error("failed to init storage", err)
 		os.Exit(1)
 	}
 	fmt.Println(test_add)
