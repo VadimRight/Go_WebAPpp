@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/VadimRight/Go_WebApp/internal/lib/api/response"
-	"github.com/VadimRight/Go_WebApp/internal/lib/logger/sl"
 	"github.com/VadimRight/Go_WebApp/internal/lib/random"
 	"github.com/VadimRight/Go_WebApp/internal/storage"
 	"github.com/go-chi/chi/v5/middleware"
@@ -51,7 +50,7 @@ func New(log *slog.Logger, urlSave URLHadler) http.HandlerFunc {
 		}
 
 		if err != nil {
-			log.Error("failed to decode request body", sl.Error(err))
+			log.Error("failed to decode request body", err)
 			render.JSON(w, r, response.Error("failed to decode request"))
 			return
 
@@ -61,7 +60,7 @@ func New(log *slog.Logger, urlSave URLHadler) http.HandlerFunc {
 
 		if err := validator.New().Struct(req); err != nil {
 			validateErr := err.(validator.ValidationErrors)
-			log.Error("invalid request", sl.Error(err))
+			log.Error("invalid request", err)
 			render.JSON(w, r, response.ValidationError(validateErr))
 			return
 		}
@@ -78,7 +77,7 @@ func New(log *slog.Logger, urlSave URLHadler) http.HandlerFunc {
 			return
 		}
 		if err != nil {
-			log.Error("failed to add url", sl.Error(err))
+			log.Error("failed to add url", err)
 			render.JSON(w, r, response.Error("failed to add url"))
 			return
 		}
