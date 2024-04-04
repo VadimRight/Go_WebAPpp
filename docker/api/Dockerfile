@@ -8,6 +8,4 @@ RUN go mod download
 
 COPY . ./
 
-EXPOSE 8000
-
 CMD go run cmd/url-shortener/main.go
