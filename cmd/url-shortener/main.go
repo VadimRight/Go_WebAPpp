@@ -24,7 +24,7 @@ const (
 func main() {
 
 	cfg := config.MustLoad()
-	log := setupLogger(envLocal)
+	log := setupLogger(cfg.Env)
 	log.Info(
 		"starting url-shortener",
 		slog.String("env", envLocal),

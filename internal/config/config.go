@@ -4,7 +4,6 @@ import (
 	"log"
 	"os"
 	"time"
-	"fmt"
 	"github.com/ilyakaznacheev/cleanenv"
 	"github.com/joho/godotenv"
 )
@@ -19,6 +18,7 @@ type Config struct {
 	Timeout           time.Duration `env:"TIMEOUT" env-default:"30s"`
 	IdleTimeout       time.Duration `env:"IDLE_TIMEOUT" env-default:"110s"`
 	Server_Addr string `env:"SERVER_ADDR" env-description:"server adderess"`
+	Env string `env:"ENV"`
 }
 
 type ConfigDatabase struct {
@@ -41,9 +41,10 @@ func MustLoad() Config {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("err loading: %v", err)
-	}
+	}		
 	envDev := os.Getenv("ENV")
-	fmt.Println(envDev)
+	log := log.New(os.Stdout, "INFO: ", log.Ldate|log.Ltime)
+	log.Printf("ENV is %s", envDev)
 	configPath := os.Getenv("CONFIG_PATH")
 	if configPath == "" {
 		log.Fatal("CONFIG_PATH is not set")
