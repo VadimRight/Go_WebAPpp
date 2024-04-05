@@ -5,11 +5,8 @@ services:
     image: postgres:15
     container_name: db_app
     command: -p 5432
-    environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=godb
-
+    env_file:
+      - .env.development
   app:
     container_name: go_webapp
     build:
@@ -19,16 +16,5 @@ services:
       - 8000:8000
     depends_on:
       - postgres
-    environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-      - ENV=local
-      - DB_NAME=godb
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - SERVER_ADDR=localhost:8000
-      - SERVER_PORT=8000
-      - TIMEOUT=4s
-      - IDLE_TIMEOUT=30s
-      - CONFIG_PATH=.env
-
+    env_file:
+      - .env.development
