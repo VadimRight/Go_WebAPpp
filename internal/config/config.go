@@ -4,17 +4,17 @@ import (
 	"log"
 	"os"
 	"time"
-
+	"fmt"
 	"github.com/ilyakaznacheev/cleanenv"
 	"github.com/joho/godotenv"
 )
 
 type Config struct {
-	Postgres_Port     string        `env:"DB_PORT" env-default:"5432"`
-	Postgres_Host     string        `env:"DB_HOST" env-default:"localhost"`
-	Postgres_Name     string        `env:"DB_NAME" env-default:"godb"`
-	Postgres_User     string        `env:"DB_USER" env-default:"postgres"`
-	Postgres_Password string        `env:"DB_DASSWORD" env-default:"postgres"`
+	Postgres_Port     string        `env:"POSTGRES_PORT" env-default:"5432"`
+	Postgres_Host     string        `env:"POSTGRES_HOST" env-default:"localhost"`
+	Postgres_Name     string        `env:"POSTGRES_NAME" env-default:"godb"`
+	Postgres_User     string        `env:"POSTGRES_USER" env-default:"postgres"`
+	Postgres_Password string        `env:"POSTGRES_DASSWORD" env-default:"postgres"`
 	Server_Port       string        `env:"SERVER_PORT" env-default:"8000"`
 	Timeout           time.Duration `env:"TIMEOUT" env-default:"30s"`
 	IdleTimeout       time.Duration `env:"IDLE_TIMEOUT" env-default:"110s"`
@@ -22,11 +22,11 @@ type Config struct {
 }
 
 type ConfigDatabase struct {
-	Postgres_Port     string `env:"DB_PORT" env-default:"5432"`
-	Postgres_Host     string `env:"DB_HOST" env-default:"localhost"`
-	Postgres_Name     string `env:"DB_NAME" env-default:"godb"`
-	Postgres_User     string `env:"DB_USER" env-default:"postgres"`
-	Postgres_Password string `env:"DB_DASSWORD"`
+	Postgres_Port     string `env:"POSTGRES_PORT" env-default:"5432"`
+	Postgres_Host     string `env:"POSTGRES_HOST" env-default:"localhost"`
+	Postgres_Name     string `env:"POSTGRES_NAME" env-default:"godb"`
+	Postgres_User     string `env:"POSTGRES_USER" env-default:"postgres"`
+	Postgres_Password string `env:"POSTGRES_DASSWORD"`
 }
 
 type HTTPServer struct {
@@ -42,7 +42,8 @@ func MustLoad() Config {
 	if err != nil {
 		log.Fatalf("err loading: %v", err)
 	}
-
+	envDev := os.Getenv("ENV")
+	fmt.Println(envDev)
 	configPath := os.Getenv("CONFIG_PATH")
 	if configPath == "" {
 		log.Fatal("CONFIG_PATH is not set")
