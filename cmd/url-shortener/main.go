@@ -11,7 +11,7 @@ import (
 	"github.com/VadimRight/Go_WebApp/internal/storage/postgres"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/VadimRight/Go_WebApp/internal/server/handler/url/save"
+	"github.com/VadimRight/Go_WebApp/internal/server/handler/url"
 )
 
 
