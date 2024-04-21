@@ -9,23 +9,23 @@ import (
 )
 
 type Config struct {
-	Postgres_Port     string        `env:"POSTGRES_PORT" env-default:"5432"`
-	Postgres_Host     string        `env:"POSTGRES_HOST" env-default:"localhost"`
-	Postgres_Name     string        `env:"POSTGRES_NAME" env-default:"godb"`
-	Postgres_User     string        `env:"POSTGRES_USER" env-default:"postgres"`
-	Postgres_Password string        `env:"POSTGRES_DASSWORD" env-default:"postgres"`
-	Server_Port       string        `env:"SERVER_PORT" env-default:"8000"`
-	Timeout           time.Duration `env:"TIMEOUT" env-default:"30s"`
-	IdleTimeout       time.Duration `env:"IDLE_TIMEOUT" env-default:"110s"`
+	Postgres_Port	string `env:"POSTGRES_PORT"`
+	Postgres_Host     string        `env:"POSTGRES_HOST"`
+	Postgres_Name     string        `env:"POSTGRES_NAME"`
+	Postgres_User     string        `env:"POSTGRES_USER"`
+	Postgres_Password string        `env:"POSTGRES_PASSWORD"`
+	Server_Port       string        `env:"SERVER_PORT"`
+	Timeout           time.Duration `env:"TIMEOUT"`
+	IdleTimeout       time.Duration `env:"IDLE_TIMEOUT"`
 	Server_Addr string `env:"SERVER_ADDR" env-description:"server adderess"`
 	Env string `env:"ENV"`
 }
 
 type ConfigDatabase struct {
-	Postgres_Port     string `env:"POSTGRES_PORT" env-default:"5432"`
-	Postgres_Host     string `env:"POSTGRES_HOST" env-default:"localhost"`
-	Postgres_Name     string `env:"POSTGRES_NAME" env-default:"godb"`
-	Postgres_User     string `env:"POSTGRES_USER" env-default:"postgres"`
+	Postgres_Port     string `env:"POSTGRES_PORT"`
+	Postgres_Host     string `env:"POSTGRES_HOST"`
+	Postgres_Name     string `env:"POSTGRES_NAME"`
+	Postgres_User     string `env:"POSTGRES_USER"`
 	Postgres_Password string `env:"POSTGRES_DASSWORD"`
 }
 
@@ -42,9 +42,9 @@ func MustLoad() Config {
 	if err != nil {
 		log.Fatalf("err loading: %v", err)
 	}		
-	envDev := os.Getenv("ENV")
+	env := os.Getenv("ENV")
 	log := log.New(os.Stdout, "INFO: ", log.Ldate|log.Ltime)
-	log.Printf("ENV is %s", envDev)
+	log.Printf("ENV is %s", env)
 	configPath := os.Getenv("CONFIG_PATH")
 	if configPath == "" {
 		log.Fatal("CONFIG_PATH is not set")
