@@ -65,7 +65,7 @@ func main() {
 	router.Post("/new_url", save.New(log, db))
 	log.Info("starting server", slog.String("Server Port", cfg.Server_Port))
 	router.Get("/swagger/*", httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:1323/swagger/doc.json"),
+		httpSwagger.URL("http://localhost:8000/swagger/doc.json"),
 		httpSwagger.BeforeScript(`const SomePlugin = (system) => ({
     // Some plugin
   });
