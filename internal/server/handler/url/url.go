@@ -84,7 +84,6 @@ func New(log *slog.Logger, urlSave URLHandler) http.HandlerFunc {
 		log.Info("url added",  slog.String("url", url))
 		responseOK(w, r, alias)
 	}
-
 }
 
 func responseOK(w http.ResponseWriter, r *http.Request, alias string) {
