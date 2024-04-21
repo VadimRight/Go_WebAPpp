@@ -27,7 +27,7 @@ func main() {
 	log := setupLogger(cfg.Env)
 	log.Info(
 		"starting url-shortener",
-		slog.String("env", envLocal),
+		slog.String("env", envDev),
 		slog.String("version", "123"),
 	)
 	log.Info(

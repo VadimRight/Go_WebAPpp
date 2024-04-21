@@ -9,7 +9,7 @@ import (
 )
 
 type Config struct {
-	Postgres_Port	string `env:"POSTGRES_PORT"`
+	Postgres_Port	  string 	`env:"POSTGRES_PORT"`
 	Postgres_Host     string        `env:"POSTGRES_HOST"`
 	Postgres_Name     string        `env:"POSTGRES_NAME"`
 	Postgres_User     string        `env:"POSTGRES_USER"`
@@ -38,7 +38,7 @@ type HTTPServer struct {
 
 func MustLoad() Config {
 
-	err := godotenv.Load()
+	err := godotenv.Load("enviroment/local/.env")
 	if err != nil {
 		log.Fatalf("err loading: %v", err)
 	}		
@@ -46,6 +46,7 @@ func MustLoad() Config {
 	log := log.New(os.Stdout, "INFO: ", log.Ldate|log.Ltime)
 	log.Printf("ENV is %s", env)
 	configPath := os.Getenv("CONFIG_PATH")
+	log.Printf("CONFIG_PATH is %s", configPath)
 	if configPath == "" {
 		log.Fatal("CONFIG_PATH is not set")
 	}
@@ -54,7 +55,6 @@ func MustLoad() Config {
 		log.Fatalf("config file %s does not exists", configPath)
 	}
 	var cfg Config
-
 	if err := cleanenv.ReadConfig(configPath, &cfg); err != nil {
 		log.Fatal("cannot read database config")
 	}

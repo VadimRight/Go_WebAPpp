@@ -6,7 +6,7 @@ services:
     container_name: db_app
     command: -p 5432
     env_file:
-      - .env-dev
+      - enviroment/dev/.env
   app:
     container_name: go_webapp
     build:
@@ -17,4 +17,4 @@ services:
     depends_on:
       - postgres
     env_file:
-      - .env-dev
+      - enviroment/dev/.env
