@@ -12,6 +12,8 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/VadimRight/Go_WebApp/internal/server/handler/url"
+	"github.com/swaggo/http-swagger/v2"
+	_ "github.com/VadimRight/Go_WebApp/cmd/url-shortener/docs"
 )
 
 
@@ -53,15 +55,35 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Println(test_add)
-		router := chi.NewRouter()
+	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
 	router.Use(middleware.RealIP)
 	router.Use(middleware.Logger)
 	router.Use(mwlogger.New(log))
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.URLFormat)
-	router.Post("/", save.New(log, db))
+	router.Post("/new_url", save.New(log, db))
 	log.Info("starting server", slog.String("Server Port", cfg.Server_Port))
+	router.Get("/swagger/*", httpSwagger.Handler(
+		httpSwagger.URL("http://localhost:1323/swagger/doc.json"),
+		httpSwagger.BeforeScript(`const SomePlugin = (system) => ({
+    // Some plugin
+  });
+`),
+		httpSwagger.AfterScript(`const someOtherCode = function(){
+    // Do something
+  };
+  someOtherCode();`),
+		httpSwagger.Plugins([]string{
+			"SomePlugin",
+			"AnotherPlugin",
+		}),
+		httpSwagger.UIConfig(map[string]string{
+			"showExtensions":        "true",
+			"onComplete":            `() => { window.ui.setBasePath('v3'); }`,
+			"defaultModelRendering": `"model"`,
+		}),
+	))
 	srv := &http.Server{
 		Addr:		cfg.Server_Addr,
 		Handler:      router,
