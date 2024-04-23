@@ -13,9 +13,20 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/VadimRight/Go_WebApp/internal/server/handler/url"
 	"github.com/swaggo/http-swagger/v2"
-	_ "github.com/VadimRight/Go_WebApp/cmd/url-shortener/docs"
+	_ "github.com/VadimRight/Go_WebApp/docs"
 )
 
+
+// @title URLSaver
+// @version 1.0
+// @license.name Apache 2.0
+// @host localhost:8080
+// @BasePath /
+
+// @securityDefinitions.basic BasicAuth
+
+// @externalDocs.description OpenAPI
+// @externalDocs.url https://swagger.io/resources/open-api/
 
 const (
 	envLocal = "local"
@@ -64,26 +75,11 @@ func main() {
 	router.Use(middleware.URLFormat)
 	router.Post("/new_url", save.New(log, db))
 	log.Info("starting server", slog.String("Server Port", cfg.Server_Port))
+
 	router.Get("/swagger/*", httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:8000/swagger/doc.json"),
-		httpSwagger.BeforeScript(`const SomePlugin = (system) => ({
-    // Some plugin
-  });
-`),
-		httpSwagger.AfterScript(`const someOtherCode = function(){
-    // Do something
-  };
-  someOtherCode();`),
-		httpSwagger.Plugins([]string{
-			"SomePlugin",
-			"AnotherPlugin",
-		}),
-		httpSwagger.UIConfig(map[string]string{
-			"showExtensions":        "true",
-			"onComplete":            `() => { window.ui.setBasePath('v3'); }`,
-			"defaultModelRendering": `"model"`,
-		}),
+		httpSwagger.URL("http://localhost:8000/swagger/doc.json"), //The url pointing to API definition
 	))
+
 	srv := &http.Server{
 		Addr:		cfg.Server_Addr,
 		Handler:      router,
@@ -98,6 +94,7 @@ func main() {
 		return nil	
 	}()
 }
+
 
 func setupLogger(env string) *slog.Logger {
 	var log *slog.Logger
