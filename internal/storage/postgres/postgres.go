@@ -60,7 +60,7 @@ func (g *GORMStorage) SaveURL(urltosave string, alias_name string) (string, erro
 
 }
 
-func TestAddUrl() (*GORMStorage, error) {
+func (g *GORMStorage)TestAddUrl() (*GORMStorage, error) {
 	const op = "storage.Posgres.New"
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
@@ -74,7 +74,7 @@ func TestAddUrl() (*GORMStorage, error) {
 	return &GORMStorage{db: result}, nil
 }
 
-func DeleteURL(id uuid.UUID) (*GORMStorage, error) {
+func (g *GORMStorage) DeleteURL(id uuid.UUID) (*GORMStorage, error) {
 	const op = "storage.Posgres.New"
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
