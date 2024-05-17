@@ -6,15 +6,15 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/VadimRight/Go_WebApp/internal/lib/api/response"
-	"github.com/VadimRight/Go_WebApp/internal/lib/random"
-	"github.com/VadimRight/Go_WebApp/internal/storage"
+	"github.com/VadimRight/Url-Saver/internal/lib/api/response"
+	"github.com/VadimRight/Url-Saver/internal/lib/random"
+	"github.com/VadimRight/Url-Saver/internal/storage"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 
-//	"github.com/VadimRight/Go_WebApp/internal/storage/postgres"
+//	"github.com/VadimRight/Url-Saver/internal/storage/postgres"
 )
 
 type Request struct {

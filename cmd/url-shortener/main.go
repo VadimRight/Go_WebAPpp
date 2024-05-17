@@ -5,15 +5,15 @@ import (
 	"log/slog"
 	"os"
 	"net/http"
-	"github.com/VadimRight/Go_WebApp/internal/config"
-	"github.com/VadimRight/Go_WebApp/internal/lib/logger/handlers/slogpretty"
-	mwlogger "github.com/VadimRight/Go_WebApp/internal/server/middleware/logger"
-	"github.com/VadimRight/Go_WebApp/internal/storage/postgres"
+	"github.com/VadimRight/Url-Saver/internal/config"
+	"github.com/VadimRight/Url-Saver/internal/lib/logger/handlers/slogpretty"
+	mwlogger "github.com/VadimRight/Url-Saver/internal/server/middleware/logger"
+	"github.com/VadimRight/Url-Saver/internal/storage/postgres"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/VadimRight/Go_WebApp/internal/server/handler/url"
+	"github.com/VadimRight/Url-Saver/internal/server/handler/url"
 	"github.com/swaggo/http-swagger/v2"
-	_ "github.com/VadimRight/Go_WebApp/docs"
+	_ "github.com/VadimRight/Url-Saver/docs"
 )
 
 

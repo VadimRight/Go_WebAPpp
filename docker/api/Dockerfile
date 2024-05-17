@@ -1,6 +1,6 @@
 FROM golang:1.22.1
 
-WORKDIR /Go_WebApp
+WORKDIR /Url-Saver
 
 COPY go.mod go.sum ./
 

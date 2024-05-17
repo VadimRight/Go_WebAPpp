@@ -3,8 +3,8 @@ package postgres
 import (
 	"fmt"
 
-	"github.com/VadimRight/Go_WebApp/internal/config"
-	"github.com/VadimRight/Go_WebApp/models"
+	"github.com/VadimRight/Url-Saver/internal/config"
+	"github.com/VadimRight/Url-Saver/models"
 	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
