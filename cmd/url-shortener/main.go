@@ -8,13 +8,14 @@ import (
 
 	_ "github.com/VadimRight/Url-Saver/docs"
 	"github.com/VadimRight/Url-Saver/internal/config"
-	"github.com/VadimRight/Url-Saver/internal/lib/logger/handlers/slogpretty"
 	save "github.com/VadimRight/Url-Saver/internal/server/handler/url"
+	"github.com/VadimRight/Url-Saver/internal/lib/logger/handlers/slogpretty"
 	mwlogger "github.com/VadimRight/Url-Saver/internal/server/middleware/logger"
 	"github.com/VadimRight/Url-Saver/internal/storage/postgres"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	httpSwagger "github.com/swaggo/http-swagger/v2"
+	_ "github.com/VadimRight/Url-Saver/docs"
 )
 
 // @title URLSaver
