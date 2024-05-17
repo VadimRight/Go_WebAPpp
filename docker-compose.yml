@@ -9,7 +9,7 @@ services:
     env_file:
       - enviroment/dev/.env
   app:
-    container_name: go_webapp
+    container_name: Url-Saver
     build:
       context: .
       dockerfile: docker/api/Dockerfile

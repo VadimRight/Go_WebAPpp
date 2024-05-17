@@ -3,19 +3,19 @@ package main
 import (
 	"fmt"
 	"log/slog"
-	"os"
 	"net/http"
-	"github.com/VadimRight/Go_WebApp/internal/config"
-	"github.com/VadimRight/Go_WebApp/internal/lib/logger/handlers/slogpretty"
-	mwlogger "github.com/VadimRight/Go_WebApp/internal/server/middleware/logger"
-	"github.com/VadimRight/Go_WebApp/internal/storage/postgres"
+	"os"
+
+	_ "github.com/VadimRight/Url-Saver/docs"
+	"github.com/VadimRight/Url-Saver/internal/config"
+	"github.com/VadimRight/Url-Saver/internal/lib/logger/handlers/slogpretty"
+	save "github.com/VadimRight/Url-Saver/internal/server/handler/url"
+	mwlogger "github.com/VadimRight/Url-Saver/internal/server/middleware/logger"
+	"github.com/VadimRight/Url-Saver/internal/storage/postgres"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/VadimRight/Go_WebApp/internal/server/handler/url"
-	"github.com/swaggo/http-swagger/v2"
-	_ "github.com/VadimRight/Go_WebApp/docs"
+	httpSwagger "github.com/swaggo/http-swagger/v2"
 )
-
 
 // @title URLSaver
 // @version 1.0
@@ -81,20 +81,19 @@ func main() {
 	))
 
 	srv := &http.Server{
-		Addr:		cfg.Server_Addr,
+		Addr:         cfg.Server_Addr,
 		Handler:      router,
 		ReadTimeout:  cfg.Timeout,
 		WriteTimeout: cfg.Timeout,
 		IdleTimeout:  cfg.IdleTimeout,
 	}
-	func () error {
+	func() error {
 		if err := srv.ListenAndServe(); err != nil {
 			return fmt.Errorf("%s", err)
 		}
-		return nil	
+		return nil
 	}()
 }
-
 
 func setupLogger(env string) *slog.Logger {
 	var log *slog.Logger

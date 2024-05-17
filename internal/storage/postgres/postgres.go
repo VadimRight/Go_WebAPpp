@@ -3,8 +3,8 @@ package postgres
 import (
 	"fmt"
 
-	"github.com/VadimRight/Go_WebApp/internal/config"
-	"github.com/VadimRight/Go_WebApp/models"
+	"github.com/VadimRight/Url-Saver/internal/config"
+	"github.com/VadimRight/Url-Saver/models"
 	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -13,7 +13,6 @@ import (
 
 var cfg = config.MustLoad()
 var dbURL = fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.Postgres_User, cfg.Postgres_Password, cfg.Postgres_Host, cfg.Postgres_Port, cfg.Postgres_Name)
-
 
 type GORMStorage struct {
 	db *gorm.DB
@@ -34,7 +33,7 @@ func (g *GORMStorage) InitDB() (*GORMStorage, error) {
 	return &GORMStorage{db: db}, nil
 }
 
-func (g *GORMStorage) GetURL(id uuid.UUID) (*GORMStorage, error) {	
+func (g *GORMStorage) GetURL(id uuid.UUID) (*GORMStorage, error) {
 	const op = "storage.Posgres.New"
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
@@ -60,11 +59,11 @@ func (g *GORMStorage) SaveURL(urltosave string, alias_name string) (string, erro
 
 }
 
-func (g *GORMStorage)TestAddUrl() (*GORMStorage, error) {
+func (g *GORMStorage) TestAddUrl() (*GORMStorage, error) {
 	const op = "storage.Posgres.New"
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
-		return nil, fmt.Errorf("%s: %w", op, err)	
+		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 	id := uuid.New()
 	url := models.URL{Id: id, Url: "test.com", Alias: "test"}
@@ -78,7 +77,7 @@ func (g *GORMStorage) DeleteURL(id uuid.UUID) (*GORMStorage, error) {
 	const op = "storage.Posgres.New"
 	var db, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
-		return nil, fmt.Errorf("%s: %w", op, err)	
+		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 	db.Delete(&models.URL{}, id)
 	return &GORMStorage{db: db}, nil

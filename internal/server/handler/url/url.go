@@ -6,19 +6,18 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/VadimRight/Go_WebApp/internal/lib/api/response"
-	"github.com/VadimRight/Go_WebApp/internal/lib/random"
-	"github.com/VadimRight/Go_WebApp/internal/storage"
+	"github.com/VadimRight/Url-Saver/internal/lib/api/response"
+	"github.com/VadimRight/Url-Saver/internal/lib/random"
+	"github.com/VadimRight/Url-Saver/internal/storage"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
-
-//	"github.com/VadimRight/Go_WebApp/internal/storage/postgres"
+	// "github.com/VadimRight/Url-Saver/internal/storage/postgres"
 )
 
 type Request struct {
-	Id uuid.UUID
+	Id    uuid.UUID
 	URL   string `json:"url" validate:"required,url"`
 	Alias string `json:"alias,omitempty"`
 }
@@ -29,7 +28,7 @@ type Response struct {
 }
 
 type URLHandler interface {
-	 SaveURL(urltosave string, alias_name string) (string, error)
+	SaveURL(urltosave string, alias_name string) (string, error)
 }
 
 const aliasLength = 6
@@ -81,7 +80,7 @@ func New(log *slog.Logger, urlSave URLHandler) http.HandlerFunc {
 			render.JSON(w, r, response.Error("failed to add url"))
 			return
 		}
-		log.Info("url added",  slog.String("url", url))
+		log.Info("url added", slog.String("url", url))
 		responseOK(w, r, alias)
 	}
 }

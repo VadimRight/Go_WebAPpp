@@ -1,4 +1,4 @@
-module github.com/VadimRight/Go_WebApp
+module github.com/VadimRight/Url-Saver
 
 go 1.22.1
 
